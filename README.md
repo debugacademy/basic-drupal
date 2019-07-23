@@ -78,21 +78,21 @@ https://github.com/drud/ddev/releases/download/v1.9.1/ddev_windows_installer.v1.
 
 The code used in our exercises is stored in GitHub. Clone (or download a ZIP file) from the repository:
 
-Weather App: https://github.com/debugacademy/weather-app
+Weather App: https://github.com/debugacademy/basic-drupal
 
 ### Cloning the repository:
 1. If you would like to clone the repository, go to the command line and CD into the directory where you would like to put the repository. 
 
 2. Enter 
-`git clone https://github.com/debugacademy/weather-app.git`
+`git clone https://github.com/debugacademy/basic-drupal.git`
 
 **If** you already have SSH set up with GitHub, you can run
-`git clone git@github.com:debugacademy/weather-app.git`
+`git clone git@github.com:debugacademy/basic-drupal.git`
 
 ### Downloading a ZIP file:
 1. If you'd prefer, you can also download a ZIP file and expand it into your preferred directory location.
 
-ZIP file location: https://github.com/debugacademy/weather-app/archive/master.zip
+ZIP file location: https://github.com/debugacademy/basic-drupal/archive/master.zip
 
 Once you have cloned or expanded the ZIP file, you should now have a new directory named `weather-app` containing the exercise files.
 
