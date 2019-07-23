@@ -1,145 +1,114 @@
-# Composer template for Drupal projects
+We'll be running our code today using DDEV. If you have an existing PHP environment you would like to use, feel free to use that -- however please note that we won't be able to help with environment troubleshooting during the class due to time contraints.
 
-[![Build Status](https://travis-ci.org/drupal-composer/drupal-project.svg?branch=8.x)](https://travis-ci.org/drupal-composer/drupal-project)
-
-This project template provides a starter kit for managing your site
-dependencies with [Composer](https://getcomposer.org/).
-
-If you want to know how to use it as replacement for
-[Drush Make](https://github.com/drush-ops/drush/blob/8.x/docs/make.md) visit
-the [Documentation on drupal.org](https://www.drupal.org/node/2471553).
-
-## Usage
-
-First you need to [install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
-
-> Note: The instructions below refer to the [global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
-You might need to replace `composer` with `php composer.phar` (or similar) 
-for your setup.
-
-After that you can create the project:
-
-```
-composer create-project drupal-composer/drupal-project:8.x-dev some-dir --no-interaction
-```
-
-With `composer require ...` you can download new dependencies to your 
-installation.
-
-```
-cd some-dir
-composer require drupal/devel:~1.0
-```
-
-The `composer create-project` command passes ownership of all files to the 
-project that is created. You should create a new git repository, and commit 
-all files not excluded by the .gitignore file.
-
-## What does the template do?
-
-When installing the given `composer.json` some tasks are taken care of:
-
-* Drupal will be installed in the `web`-directory.
-* Autoloader is implemented to use the generated composer autoloader in `vendor/autoload.php`,
-  instead of the one provided by Drupal (`web/vendor/autoload.php`).
-* Modules (packages of type `drupal-module`) will be placed in `web/modules/contrib/`
-* Theme (packages of type `drupal-theme`) will be placed in `web/themes/contrib/`
-* Profiles (packages of type `drupal-profile`) will be placed in `web/profiles/contrib/`
-* Creates default writable versions of `settings.php` and `services.yml`.
-* Creates `web/sites/default/files`-directory.
-* Latest version of drush is installed locally for use at `vendor/bin/drush`.
-* Latest version of DrupalConsole is installed locally for use at `vendor/bin/drupal`.
-* Creates environment variables based on your .env file. See [.env.example](.env.example).
-
-## Updating Drupal Core
-
-This project will attempt to keep all of your Drupal Core files up-to-date; the 
-project [drupal-composer/drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold) 
-is used to ensure that your scaffold files are updated every time drupal/core is 
-updated. If you customize any of the "scaffolding" files (commonly .htaccess), 
-you may need to merge conflicts if any of your modified files are updated in a 
-new release of Drupal core.
-
-Follow the steps below to update your core files.
-
-1. Run `composer update drupal/core webflo/drupal-core-require-dev "symfony/*" --with-dependencies` to update Drupal Core and its dependencies.
-1. Run `git diff` to determine if any of the scaffolding files have changed. 
-   Review the files for any changes and restore any customizations to 
-  `.htaccess` or `robots.txt`.
-1. Commit everything all together in a single commit, so `web` will remain in
-   sync with the `core` when checking out branches or running `git bisect`.
-1. In the event that there are non-trivial conflicts in step 2, you may wish 
-   to perform these steps on a branch, and use `git merge` to combine the 
-   updated core files with your customized files. This facilitates the use 
-   of a [three-way merge tool such as kdiff3](http://www.gitshah.com/2010/12/how-to-setup-kdiff-as-diff-tool-for-git.html). This setup is not necessary if your changes are simple; 
-   keeping all of your modifications at the beginning or end of the file is a 
-   good strategy to keep merges easy.
-
-## Generate composer.json from existing project
-
-With using [the "Composer Generate" drush extension](https://www.drupal.org/project/composer_generate)
-you can now generate a basic `composer.json` file from an existing project. Note
-that the generated `composer.json` might differ from this project's file.
+To set up DDEV, you must first install Docker if you don't already have it.
 
 
-## FAQ
+## Installing Docker
 
-### Should I commit the contrib modules I download?
+### Docker for Mac OS:
+(Instructions taken from https://docs.docker.com/docker-for-mac/install/)
 
-Composer recommends **no**. They provide [argumentation against but also 
-workrounds if a project decides to do it anyway](https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).
+1.  Download the latest stable release:
+https://download.docker.com/mac/stable/31259/Docker.dmg
 
-### Should I commit the scaffolding files?
+2. Double-click Docker.dmg to open the installer, then drag Moby the whale to the Applications folder.
 
-The [drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold) plugin can download the scaffold files (like
-index.php, update.php, …) to the web/ directory of your project. If you have not customized those files you could choose
-to not check them into your version control system (e.g. git). If that is the case for your project it might be
-convenient to automatically run the drupal-scaffold plugin after every install or update of your project. You can
-achieve that by registering `@composer drupal:scaffold` as post-install and post-update command in your composer.json:
+![Install Docker app](https://docs.docker.com/docker-for-mac/images/docker-app-drag.png)
 
-```json
-"scripts": {
-    "post-install-cmd": [
-        "@composer drupal:scaffold",
-        "..."
-    ],
-    "post-update-cmd": [
-        "@composer drupal:scaffold",
-        "..."
-    ]
-},
-```
-### How can I apply patches to downloaded modules?
+3. Double-click Docker.app in the Applications folder to start Docker. (In the example below, the Applications folder is in “grid” view mode.)
 
-If you need to apply patches (depending on the project being modified, a pull 
-request is often a better solution), you can do so with the 
-[composer-patches](https://github.com/cweagans/composer-patches) plugin.
+![Docker app in Hockeyapp](https://docs.docker.com/docker-for-mac/images/docker-app-in-apps.png)
 
-To add a patch to drupal module foobar insert the patches section in the extra 
-section of composer.json:
-```json
-"extra": {
-    "patches": {
-        "drupal/foobar": {
-            "Patch description": "URL or local path to patch"
-        }
-    }
-}
-```
-### How do I switch from packagist.drupal-composer.org to packages.drupal.org?
+You are prompted to authorize Docker.app with your system password after you launch it. Privileged access is needed to install networking components and links to the Docker apps.
 
-Follow the instructions in the [documentation on drupal.org](https://www.drupal.org/docs/develop/using-composer/using-packagesdrupalorg).
+The whale in the top status bar indicates that Docker is running, and accessible from a terminal.
 
-### How do I specify a PHP version ?
+![Whale in menu bar](https://docs.docker.com/docker-for-mac/images/whale-in-menu-bar.png)
 
-This project supports PHP 5.6 as minimum version (see [Drupal 8 PHP requirements](https://www.drupal.org/docs/8/system-requirements/drupal-8-php-requirements)), however it's possible that a `composer update` will upgrade some package that will then require PHP 7+.
+4. If you just installed the app, you also get a success message with suggested next steps and a link to this documentation. Click the whale (whale menu) in the status bar to dismiss this popup.
 
-To prevent this you can add this code to specify the PHP version you want to use in the `config` section of `composer.json`:
-```json
-"config": {
-    "sort-packages": true,
-    "platform": {
-        "php": "5.6.40"
-    }
-},
-```
+![Startup information](https://docs.docker.com/docker-for-mac/images/mac-install-success-docker-cloud.png)
+
+### Docker for Windows:
+(Instructions taken from https://docs.docker.com/docker-for-windows/install/)
+
+1. Download the latest stable release of the Window installer: https://download.docker.com/win/stable/31259/Docker%20for%20Windows%20Installer.exe
+
+2. Double-click Docker Desktop for Windows Installer.exe to run the installer.
+It typically downloads to your Downloads folder, or you can run it from the recent downloads bar at the bottom of your web browser.
+
+3. Follow the install wizard to accept the license, authorize the installer, and proceed with the install.
+You are asked to authorize Docker.app with your system password during the install process. Privileged access is needed to install networking components, links to the Docker apps, and manage the Hyper-V VMs.
+
+4. Click **Finish** on the setup complete dialog to launch Docker.
+
+5. Docker may not start automatically after installation. To start it, search for Docker, select **Docker Desktop for Windows** in the search results, and click it (or hit Enter).
+
+![search for Docker app](https://docs.docker.com/docker-for-windows/images/docker-app-search.png)
+
+When the whale in the status bar stays steady, Docker is up-and-running, and accessible from any terminal window.
+
+![whale on taskbar](https://docs.docker.com/docker-for-windows/images/whale-icon-systray.png)
+
+If the whale is hidden in the Notifications area, click the up arrow on the taskbar to show it.
+
+If you just installed the app, you also get a popup success message (shown below) with suggested next steps, and a link to this documentation.
+
+**NOTE** You do **NOT** need to login or create an account at Docker.com. Click the x to close the window.
+
+![Startup information](https://docs.docker.com/docker-for-windows/images/docker-app-welcome.png)
+
+
+## Installing DDEV
+
+### DDEV for Mac
+
+(Instructions taken from the DDEV site at https://www.drud.com/get-started/)
+
+1. For macOS/Linux users, we recommend downloading, installing, and upgrading via Homebrew/Linuxbrew.
+
+`brew tap drud/ddev && brew install ddev`
+
+## DDEV for Windows
+
+Download the installer and run it:
+https://github.com/drud/ddev/releases/download/v1.9.1/ddev_windows_installer.v1.9.1.exe
+
+## Get a local copy of the repository
+
+The code used in our exercises is stored in GitHub. Clone (or download a ZIP file) from the repository:
+
+Weather App: https://github.com/debugacademy/weather-app
+
+### Cloning the repository:
+1. If you would like to clone the repository, go to the command line and CD into the directory where you would like to put the repository. 
+
+2. Enter 
+`git clone https://github.com/debugacademy/weather-app.git`
+
+**If** you already have SSH set up with GitHub, you can run
+`git clone git@github.com:debugacademy/weather-app.git`
+
+### Downloading a ZIP file:
+1. If you'd prefer, you can also download a ZIP file and expand it into your preferred directory location.
+
+ZIP file location: https://github.com/debugacademy/weather-app/archive/master.zip
+
+Once you have cloned or expanded the ZIP file, you should now have a new directory named `weather-app` containing the exercise files.
+
+
+## Starting your PHP environment
+
+Once Docker and DDEV have been installed, you need to start them up in order to execute PHP code.
+
+1. Make sure Docker is running -- look for the whale icon in the top status bar (Mac) or on the taskbar (Windows)
+![Whale in menu bar](https://docs.docker.com/docker-for-mac/images/whale-in-menu-bar.png)
+![whale on taskbar](https://docs.docker.com/docker-for-windows/images/whale-icon-systray.png)
+
+2. CD into the `basic-drupal` directory and start DDEV from the command line:
+`ddev start`
+
+3. `ddev ssh`  
+`ddev site-install`  
+`drush sqlc < db_export.sql`  
+`drush cr`  
