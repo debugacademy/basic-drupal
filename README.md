@@ -83,7 +83,7 @@ https://github.com/drud/ddev/releases/download/v1.9.1/ddev_windows_installer.v1.
 
 The code used in our exercises is stored in GitHub. Clone (or download a ZIP file) from the repository:
 
-Weather App: https://github.com/debugacademy/weather-app
+Basic Drupal site: https://github.com/debugacademy/basic-drupal
 
 ### Cloning the repository:
 1. If you would like to clone the repository, go to the command line and CD into the directory where you would like to put the repository. 
