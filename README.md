@@ -109,6 +109,6 @@ Once Docker and DDEV have been installed, you need to start them up in order to 
 `ddev start`
 
 3. `ddev ssh`  
-`ddev site-install`  
+`drush site-install`  
 `drush sqlc < db_export.sql`  
 `drush cr`  
