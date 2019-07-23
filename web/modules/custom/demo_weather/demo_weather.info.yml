@@ -1,0 +1,5 @@
+name: 'demo weather block'
+type: module
+description: 'Gets weather and prints it in a block'
+core: 8.x
+package: 'Custom'

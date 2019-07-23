@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains demo_weather.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function demo_weather_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the demo_weather module.
+    case 'help.page.demo_weather':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Gets weather and prints it in a block') . '</p>';
+      return $output;
+
+    default:
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "demo_weather",
+    "type": "drupal-module",
+    "description": "Gets weather and prints it in a block",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/demo_weather",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/demo_weather",
+        "source": "http://cgit.drupalcode.org/demo_weather"
+    },
+    "require": {
+        "dmitry-ivanov/dark-sky-api": "^1.0"
+    }
+}
