@@ -63,7 +63,6 @@ class WeatherBlock extends BlockBase implements ContainerFactoryPluginInterface 
    */
   public function build() {
     $build = [];
-    $build['#theme'] = 'weather_block';
      $build['weather_block']['#markup'] = 'Implement WeatherBlock.';
 
     return $build;
